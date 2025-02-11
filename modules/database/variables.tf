@@ -3,6 +3,11 @@ variable "environment" {
   type        = string
 }
 
+variable "project_name" {
+  description = "Name of the project"
+  type        = string
+}
+
 variable "private_subnets" {
   description = "List of private subnet IDs"
   type        = list(string)
@@ -26,7 +31,7 @@ variable "ssm_parameter_prefix" {
 }
 
 locals {
-  name_prefix = "${var.environment}-"
+  name_prefix = "${var.environment}-${var.project_name}-"
   tags = {
     Environment = var.environment
     ManagedBy   = "terraform"

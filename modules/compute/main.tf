@@ -30,7 +30,9 @@ resource "aws_instance" "bastion" {
 
 resource "aws_eip" "bastion" {
   instance = aws_instance.bastion.id
-  tags     = local.tags
+  tags = merge(local.tags, {
+    Name = "${local.name_prefix}bastion-eip"
+  })
 }
 
 # Load Balancer
@@ -101,9 +103,11 @@ resource "aws_launch_template" "web" {
 }
 
 resource "aws_autoscaling_group" "web" {
+  name                = "${local.name_prefix}web-asg"
   desired_capacity    = 2
   max_size            = 4
   min_size            = 1
+  force_delete        = true
   target_group_arns   = [aws_lb_target_group.web.arn]
   vpc_zone_identifier = var.private_subnets
 
@@ -120,11 +124,20 @@ resource "aws_autoscaling_group" "web" {
       propagate_at_launch = true
     }
   }
+
+  tag {
+    key                 = "Name"
+    value               = "${local.name_prefix}web-asg"
+    propagate_at_launch = true
+  }
 }
 
 # IAM role for SSM access
 resource "aws_iam_role" "bastion" {
   name = "${local.name_prefix}bastion-role"
+  tags = merge(local.tags, {
+    Name = "${local.name_prefix}bastion-role"
+  })
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -148,4 +161,7 @@ resource "aws_iam_role_policy_attachment" "bastion_ssm" {
 resource "aws_iam_instance_profile" "bastion" {
   name = "${local.name_prefix}bastion-profile"
   role = aws_iam_role.bastion.name
+  tags = merge(local.tags, {
+    Name = "${local.name_prefix}bastion-profile"
+  })
 }

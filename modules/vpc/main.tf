@@ -1,6 +1,8 @@
 # EIP for NAT Gateway
 resource "aws_eip" "nat" {
-  tags = local.tags
+  tags = merge(local.tags, {
+    Name = "${local.name_prefix}nat-eip"
+  })
 }
 
 # VPC
@@ -42,7 +44,8 @@ resource "aws_subnet" "private" {
 
 # Internet Gateway
 resource "aws_internet_gateway" "main" {
-  vpc_id = aws_vpc.main.id
+  vpc_id     = aws_vpc.main.id
+  depends_on = [aws_vpc.main]
 
   tags = merge(local.tags, {
     Name = "${local.name_prefix}igw"
@@ -63,7 +66,8 @@ resource "aws_nat_gateway" "main" {
 
 # Route Tables
 resource "aws_route_table" "public" {
-  vpc_id = aws_vpc.main.id
+  vpc_id     = aws_vpc.main.id
+  depends_on = [aws_internet_gateway.main]
 
   route {
     cidr_block = "0.0.0.0/0"

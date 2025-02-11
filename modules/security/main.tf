@@ -101,6 +101,9 @@ resource "aws_security_group" "database" {
 resource "aws_iam_policy" "ssm_access" {
   name        = "${local.name_prefix}ssm-access"
   description = "Allow access to SSM parameters"
+  tags = merge(local.tags, {
+    Name = "${local.name_prefix}ssm-access"
+  })
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -121,8 +124,9 @@ resource "aws_kms_key" "ssm" {
   description             = "${local.name_prefix}ssm-encryption"
   deletion_window_in_days = 7
   enable_key_rotation     = true
-
-  tags = local.tags
+  tags = merge(local.tags, {
+    Name = "${local.name_prefix}ssm-key"
+  })
 }
 
 resource "aws_kms_alias" "ssm" {
@@ -140,7 +144,9 @@ resource "tls_private_key" "bastion" {
 resource "aws_key_pair" "bastion" {
   key_name   = "${local.name_prefix}bastion-key"
   public_key = tls_private_key.bastion.public_key_openssh
-  tags       = local.tags
+  tags = merge(local.tags, {
+    Name = "${local.name_prefix}bastion-key"
+  })
 }
 
 # Store private key in SSM Parameter Store
@@ -150,5 +156,7 @@ resource "aws_ssm_parameter" "bastion_private_key" {
   type        = "SecureString"
   value       = tls_private_key.bastion.private_key_pem
   key_id      = aws_kms_key.ssm.key_id
-  tags        = local.tags
+  tags = merge(local.tags, {
+    Name = "${local.name_prefix}bastion-ssh-key"
+  })
 }

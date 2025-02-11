@@ -45,6 +45,7 @@ No modules.
 | <a name="input_instance_type"></a> [instance\_type](#input\_instance\_type) | EC2 instance type | `string` | n/a | yes |
 | <a name="input_key_name"></a> [key\_name](#input\_key\_name) | Name of existing EC2 key pair | `string` | n/a | yes |
 | <a name="input_private_subnets"></a> [private\_subnets](#input\_private\_subnets) | List of private subnet IDs | `list(string)` | n/a | yes |
+| <a name="input_project_name"></a> [project\_name](#input\_project\_name) | Name of the project | `string` | n/a | yes |
 | <a name="input_public_subnets"></a> [public\_subnets](#input\_public\_subnets) | List of public subnet IDs | `list(string)` | n/a | yes |
 | <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | ID of the VPC | `string` | n/a | yes |
 | <a name="input_webserver_sg_id"></a> [webserver\_sg\_id](#input\_webserver\_sg\_id) | ID of the web server security group | `string` | n/a | yes |

@@ -36,6 +36,7 @@ No resources.
 | <a name="input_environment"></a> [environment](#input\_environment) | Environment name | `string` | `"dev"` | no |
 | <a name="input_instance_type"></a> [instance\_type](#input\_instance\_type) | EC2 instance type | `string` | `"t3.micro"` | no |
 | <a name="input_private_subnets"></a> [private\_subnets](#input\_private\_subnets) | CIDR blocks for private subnets | `list(string)` | <pre>[<br/>  "10.0.10.0/24",<br/>  "10.0.11.0/24",<br/>  "10.0.20.0/24",<br/>  "10.0.21.0/24"<br/>]</pre> | no |
+| <a name="input_project_name"></a> [project\_name](#input\_project\_name) | Name of the project | `string` | `"bastion-app"` | no |
 | <a name="input_public_subnets"></a> [public\_subnets](#input\_public\_subnets) | CIDR blocks for public subnets | `list(string)` | <pre>[<br/>  "10.0.1.0/24",<br/>  "10.0.2.0/24"<br/>]</pre> | no |
 | <a name="input_vpc_cidr"></a> [vpc\_cidr](#input\_vpc\_cidr) | CIDR block for VPC | `string` | `"10.0.0.0/16"` | no |
 

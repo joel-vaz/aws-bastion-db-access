@@ -44,3 +44,9 @@ variable "instance_type" {
   type        = string
   default     = "t3.micro"
 }
+
+variable "project_name" {
+  description = "Name of the project"
+  type        = string
+  default     = "bastion-app"
+}

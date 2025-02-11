@@ -3,6 +3,11 @@ variable "environment" {
   type        = string
 }
 
+variable "project_name" {
+  description = "Name of the project"
+  type        = string
+}
+
 variable "vpc_id" {
   description = "ID of the VPC"
   type        = string
@@ -49,7 +54,7 @@ variable "instance_type" {
 }
 
 locals {
-  name_prefix = "${var.environment}-"
+  name_prefix = "${var.environment}-${var.project_name}-"
   tags = {
     Environment = var.environment
     ManagedBy   = "terraform"
