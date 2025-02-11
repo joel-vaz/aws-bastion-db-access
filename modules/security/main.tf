@@ -18,7 +18,7 @@ resource "aws_security_group" "bastion" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags = merge(local.tags, {
+  tags = merge(var.tags, {
     Name = "${local.name_prefix}bastion-sg"
   })
 }
@@ -42,7 +42,7 @@ resource "aws_security_group" "alb" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags = merge(local.tags, {
+  tags = merge(var.tags, {
     Name = "${local.name_prefix}alb-sg"
   })
 }
@@ -74,7 +74,7 @@ resource "aws_security_group" "webserver" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags = merge(local.tags, {
+  tags = merge(var.tags, {
     Name = "${local.name_prefix}web-sg"
   })
 }
@@ -92,7 +92,7 @@ resource "aws_security_group" "database" {
     security_groups = [aws_security_group.webserver.id]
   }
 
-  tags = merge(local.tags, {
+  tags = merge(var.tags, {
     Name = "${local.name_prefix}db-sg"
   })
 }
@@ -101,7 +101,7 @@ resource "aws_security_group" "database" {
 resource "aws_iam_policy" "ssm_access" {
   name        = "${local.name_prefix}ssm-access"
   description = "Allow access to SSM parameters"
-  tags = merge(local.tags, {
+  tags = merge(var.tags, {
     Name = "${local.name_prefix}ssm-access"
   })
 
@@ -124,7 +124,7 @@ resource "aws_kms_key" "ssm" {
   description             = "${local.name_prefix}ssm-encryption"
   deletion_window_in_days = 7
   enable_key_rotation     = true
-  tags = merge(local.tags, {
+  tags = merge(var.tags, {
     Name = "${local.name_prefix}ssm-key"
   })
 }
@@ -144,7 +144,7 @@ resource "tls_private_key" "bastion" {
 resource "aws_key_pair" "bastion" {
   key_name   = "${local.name_prefix}bastion-key"
   public_key = tls_private_key.bastion.public_key_openssh
-  tags = merge(local.tags, {
+  tags = merge(var.tags, {
     Name = "${local.name_prefix}bastion-key"
   })
 }
@@ -156,7 +156,7 @@ resource "aws_ssm_parameter" "bastion_private_key" {
   type        = "SecureString"
   value       = tls_private_key.bastion.private_key_pem
   key_id      = aws_kms_key.ssm.key_id
-  tags = merge(local.tags, {
+  tags = merge(var.tags, {
     Name = "${local.name_prefix}bastion-ssh-key"
   })
 }

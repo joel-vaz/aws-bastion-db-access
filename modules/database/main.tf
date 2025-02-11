@@ -3,7 +3,7 @@ resource "aws_db_subnet_group" "main" {
   name       = "${local.name_prefix}db-subnet"
   subnet_ids = var.private_subnets
 
-  tags = merge(local.tags, {
+  tags = merge(var.tags, {
     Name = "${local.name_prefix}db-subnet-group"
   })
 }
@@ -33,7 +33,7 @@ resource "aws_db_instance" "main" {
   skip_final_snapshot     = true
   multi_az                = false
 
-  tags = merge(local.tags, {
+  tags = merge(var.tags, {
     Name = "${local.name_prefix}mysql"
   })
 }

@@ -11,6 +11,7 @@ module "vpc" {
   availability_zones = var.availability_zones
   public_subnets     = var.public_subnets
   private_subnets    = var.private_subnets
+  tags               = local.common_tags
 }
 
 module "security" {
@@ -19,6 +20,7 @@ module "security" {
   environment  = var.environment
   project_name = var.project_name
   vpc_id       = module.vpc.vpc_id
+  tags         = local.common_tags
 }
 
 module "compute" {
@@ -35,6 +37,7 @@ module "compute" {
   key_name        = module.security.bastion_key_name
   instance_type   = var.instance_type
   certificate_arn = var.certificate_arn
+  tags            = local.common_tags
 }
 
 module "database" {
@@ -44,4 +47,5 @@ module "database" {
   project_name    = var.project_name
   private_subnets = module.vpc.private_subnet_ids
   database_sg_id  = module.security.database_sg_id
+  tags            = local.common_tags
 }

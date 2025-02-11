@@ -35,14 +35,4 @@ aws ssm put-parameter \
     --overwrite \
     --region "$REGION"
 
-# Store JWT secret
-JWT_SECRET=$(openssl rand -base64 32)
-aws ssm put-parameter \
-    --name "$PREFIX/jwt_secret" \
-    --value "$JWT_SECRET" \
-    --type "SecureString" \
-    --description "JWT secret for ${ENV} environment" \
-    --overwrite \
-    --region "$REGION"
-
 echo "All secrets generated and stored successfully in SSM Parameter Store"

@@ -36,11 +36,11 @@ No modules.
 | <a name="input_instance_type"></a> [instance\_type](#input\_instance\_type) | RDS instance type | `string` | `"db.t3.micro"` | no |
 | <a name="input_private_subnets"></a> [private\_subnets](#input\_private\_subnets) | List of private subnet IDs | `list(string)` | n/a | yes |
 | <a name="input_project_name"></a> [project\_name](#input\_project\_name) | Name of the project | `string` | n/a | yes |
+| <a name="input_tags"></a> [tags](#input\_tags) | Common tags for all resources | `map(string)` | n/a | yes |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| <a name="output_db_name"></a> [db\_name](#output\_db\_name) | Database name |
 | <a name="output_endpoint"></a> [endpoint](#output\_endpoint) | RDS instance endpoint |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

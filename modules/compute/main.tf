@@ -23,14 +23,14 @@ resource "aws_instance" "bastion" {
     http_tokens = "required"
   }
 
-  tags = merge(local.tags, {
+  tags = merge(var.tags, {
     Name = "${local.name_prefix}bastion"
   })
 }
 
 resource "aws_eip" "bastion" {
   instance = aws_instance.bastion.id
-  tags = merge(local.tags, {
+  tags = merge(var.tags, {
     Name = "${local.name_prefix}bastion-eip"
   })
 }
@@ -43,7 +43,7 @@ resource "aws_lb" "web" {
   security_groups    = [var.alb_sg_id]
   subnets            = var.public_subnets
 
-  tags = merge(local.tags, {
+  tags = merge(var.tags, {
     Name = "${local.name_prefix}alb"
   })
 }
@@ -72,7 +72,7 @@ resource "aws_lb_target_group" "web" {
     port = 80
   }
 
-  tags = merge(local.tags, {
+  tags = merge(var.tags, {
     Name = "${local.name_prefix}web-tg"
   })
 }
@@ -97,7 +97,7 @@ resource "aws_launch_template" "web" {
               EOF
   )
 
-  tags = merge(local.tags, {
+  tags = merge(var.tags, {
     Name = "${local.name_prefix}web-lt"
   })
 }
@@ -117,7 +117,7 @@ resource "aws_autoscaling_group" "web" {
   }
 
   dynamic "tag" {
-    for_each = local.tags
+    for_each = var.tags
     content {
       key                 = tag.key
       value               = tag.value
@@ -135,7 +135,7 @@ resource "aws_autoscaling_group" "web" {
 # IAM role for SSM access
 resource "aws_iam_role" "bastion" {
   name = "${local.name_prefix}bastion-role"
-  tags = merge(local.tags, {
+  tags = merge(var.tags, {
     Name = "${local.name_prefix}bastion-role"
   })
 
@@ -161,7 +161,7 @@ resource "aws_iam_role_policy_attachment" "bastion_ssm" {
 resource "aws_iam_instance_profile" "bastion" {
   name = "${local.name_prefix}bastion-profile"
   role = aws_iam_role.bastion.name
-  tags = merge(local.tags, {
+  tags = merge(var.tags, {
     Name = "${local.name_prefix}bastion-profile"
   })
 }

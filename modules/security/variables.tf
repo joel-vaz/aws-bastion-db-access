@@ -13,11 +13,12 @@ variable "vpc_id" {
   type        = string
 }
 
+variable "tags" {
+  description = "Common tags for all resources"
+  type        = map(string)
+}
+
 locals {
   name_prefix = "${var.environment}-${var.project_name}-"
   ssm_prefix  = "/${var.project_name}/${var.environment}"
-  tags = {
-    Environment = var.environment
-    ManagedBy   = "terraform"
-  }
 }

@@ -50,3 +50,11 @@ variable "project_name" {
   type        = string
   default     = "bastion-app"
 }
+
+locals {
+  common_tags = {
+    Environment = var.environment
+    ManagedBy   = "terraform"
+    Project     = var.project_name
+  }
+}

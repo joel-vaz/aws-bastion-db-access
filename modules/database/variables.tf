@@ -24,10 +24,11 @@ variable "instance_type" {
   default     = "db.t3.micro"
 }
 
+variable "tags" {
+  description = "Common tags for all resources"
+  type        = map(string)
+}
+
 locals {
   name_prefix = "${var.environment}-${var.project_name}-"
-  tags = {
-    Environment = var.environment
-    ManagedBy   = "terraform"
-  }
 }
