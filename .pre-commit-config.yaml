@@ -6,6 +6,7 @@ repos:
     - id: end-of-file-fixer
     - id: check-yaml
     - id: check-added-large-files
+      args: ['--maxkb=1100']
     - id: check-merge-conflict
     - id: detect-private-key
 
@@ -15,9 +16,9 @@ repos:
     - id: terraform_fmt
     - id: terraform_docs
       args:
-        - --hook-config=--path-to-file=README.md        # Path to your docs
-        - --hook-config=--add-to-existing-file=true     # Add to existing README.md
-        - --hook-config=--create-file-if-not-exist=true # Create README.md if not exists
+        - --hook-config=--path-to-file=README.md
+        - --hook-config=--add-to-existing-file=true
+        - --hook-config=--create-file-if-not-exist=true
     - id: terraform_tflint
       args:
         - '--args=--only=terraform_deprecated_interpolation'

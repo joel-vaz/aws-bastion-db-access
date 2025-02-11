@@ -29,6 +29,8 @@ terraform destroy
 
 ## Architecture
 
+![AWS Infrastructure Architecture](docs/images/architecture.png)
+
 ### Network Tiers
 1. **Public Subnet (DMZ)**
    - Application Load Balancer (HTTPS/443)
