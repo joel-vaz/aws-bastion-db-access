@@ -196,4 +196,4 @@ Estimated costs for development environment (US East 1):
 - **Per Hour**: $0.12-0.15
 - **Per Month**: $85-110
 
-*Note: Prices based on US East 1 region, on-demand pricing.*
+*Note: Prices based on US West 2 region, on-demand pricing.*
