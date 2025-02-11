@@ -1,6 +1,6 @@
 # Bastion Host
 resource "aws_instance" "bastion" {
-  ami           = data.aws_ami.amazon_linux_2.id
+  ami           = data.aws_ami.amazon_linux.id
   instance_type = var.instance_type
   subnet_id     = var.public_subnets[0]
   key_name      = var.key_name
@@ -77,7 +77,7 @@ resource "aws_lb_target_group" "web" {
 # Web Servers
 resource "aws_launch_template" "web" {
   name_prefix   = "${local.name_prefix}web-lt"
-  image_id      = data.aws_ami.amazon_linux_2.id
+  image_id      = data.aws_ami.amazon_linux.id
   instance_type = var.instance_type
 
   network_interfaces {
