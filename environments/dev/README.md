@@ -45,7 +45,14 @@ No resources.
 | Name | Description |
 |------|-------------|
 | <a name="output_alb_dns_name"></a> [alb\_dns\_name](#output\_alb\_dns\_name) | DNS name of the application load balancer |
+| <a name="output_alb_sg_id"></a> [alb\_sg\_id](#output\_alb\_sg\_id) | Security group ID for ALB |
+| <a name="output_bastion_instance_id"></a> [bastion\_instance\_id](#output\_bastion\_instance\_id) | Instance ID of the bastion host |
 | <a name="output_bastion_public_ip"></a> [bastion\_public\_ip](#output\_bastion\_public\_ip) | Public IP of the bastion host |
+| <a name="output_bastion_sg_id"></a> [bastion\_sg\_id](#output\_bastion\_sg\_id) | Security group ID for bastion |
+| <a name="output_database_sg_id"></a> [database\_sg\_id](#output\_database\_sg\_id) | Security group ID for database |
 | <a name="output_db_endpoint"></a> [db\_endpoint](#output\_db\_endpoint) | RDS instance endpoint |
+| <a name="output_private_subnet_ids"></a> [private\_subnet\_ids](#output\_private\_subnet\_ids) | List of private subnet IDs |
+| <a name="output_public_subnet_ids"></a> [public\_subnet\_ids](#output\_public\_subnet\_ids) | List of public subnet IDs |
 | <a name="output_vpc_id"></a> [vpc\_id](#output\_vpc\_id) | ID of the VPC |
+| <a name="output_webserver_sg_id"></a> [webserver\_sg\_id](#output\_webserver\_sg\_id) | Security group ID for web servers |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

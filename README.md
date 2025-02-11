@@ -22,23 +22,57 @@ terraform apply
 ```
 
 3. Validate infrastructure:
+There are two validation scripts available:
+
+a. Outside Bastion Validation:
 ```bash
 ./scripts/validate_infrastructure.sh dev
 ```
-The validation script performs comprehensive checks:
+This script validates the infrastructure from outside the bastion:
 - Network: VPC and subnet configuration
 - Bastion: IP reachability and SSH port
 - Load Balancer: DNS resolution and HTTPS endpoint
 - Auto Scaling: Instance health and capacity
 - Database: Endpoint connectivity
 - Security: Security group configuration
+
+b. Inside Bastion Validation:
+```bash
+# After connecting to bastion:
+./inside_bastion_validation.sh
 ```
+This script validates the bastion host configuration:
+- Core SSH configuration and security
+- Network connectivity and routing
+- Security settings and ports
+- System requirements
 
 4. Cleanup:
 ```bash
 terraform destroy
 ./scripts/delete_secrets.sh dev
 ```
+
+## Validation Strategy
+
+### External Validation
+The external validation script (`validate_infrastructure.sh`) ensures:
+- Infrastructure is deployed correctly
+- All components are reachable
+- Security groups are properly configured
+- Resources are in correct subnets
+
+### Internal Validation
+The internal validation script (`inside_bastion_validation.sh`) verifies:
+- Bastion host security configuration
+- Network access and routing
+- System requirements and updates
+- Required ports and services
+
+### Connection Scripts
+- `connect_to_bastion_ssh.sh`: Automated bastion access
+- Handles SSH key retrieval and connection
+- Ensures proper permissions and security
 
 ## Architecture
 
@@ -107,12 +141,11 @@ Database:    Web Servers → RDS (3306)
 
 ## Access Information
 
-- **Web Application**: `https://<alb-dns-name>`
 - **Bastion Access**:
   Option 1 - SSH:
   ```bash
-  # Get the SSH key
-  ./scripts/get_bastion_key.sh dev
+  # Connect to bastion
+  ./scripts/connect_to_bastion_ssh.sh dev
 
   # Connect to bastion
   ssh -i ~/.ssh/bastion-dev.pem ec2-user@$(cd environments/dev && terraform output -raw bastion_public_ip)
@@ -226,3 +259,78 @@ Estimated costs for development environment (US West 2):
 - **Per Month**: $85-110
 
 *Note: Prices based on US West 2 region, on-demand pricing.*
+
+## Glossary of AWS Components
+
+### Networking Components
+- **VPC (Virtual Private Cloud)**
+  - A logically isolated section of AWS cloud where you launch resources
+  - Provides network isolation and security boundary for your infrastructure
+
+- **Internet Gateway (IGW)**
+  - Allows communication between your VPC and the internet
+  - Required for resources in public subnets to access internet
+
+- **NAT Gateway**
+  - Allows resources in private subnets to access internet
+  - Provides one-way outbound internet access while keeping resources private
+  - Required for web servers to download updates and packages
+
+- **Public Subnets**
+  - Network segments with direct route to internet via IGW
+  - Houses public-facing resources (ALB, Bastion)
+  - Required for components that need direct internet access
+
+- **Private Subnets**
+  - Network segments with no direct internet access
+  - Houses protected resources (web servers, database)
+  - Provides additional security layer for sensitive components
+
+### Security Components
+- **Security Groups**
+  - Virtual firewalls for resources at the instance level
+  - Controls inbound and outbound traffic
+  - Stateful: return traffic automatically allowed
+
+- **Bastion Host**
+  - Secure entry point for SSH access to private resources
+  - Acts as a jump server to access private instances
+  - Reduces attack surface by centralizing SSH access
+
+### Compute Components
+- **Auto Scaling Group (ASG)**
+  - Automatically manages a fleet of EC2 instances
+  - Ensures high availability and fault tolerance
+  - Scales based on demand or schedule
+
+- **Application Load Balancer (ALB)**
+  - Distributes incoming traffic across multiple targets
+  - Provides SSL/TLS termination
+  - Enables high availability for web applications
+
+- **EC2 Instances**
+  - Virtual servers in the cloud
+  - Runs the web application and bastion host
+  - Scalable compute capacity
+
+### Database Components
+- **RDS (Relational Database Service)**
+  - Managed relational database service
+  - Handles routine database tasks (backups, patches)
+  - Provides high availability and security features
+
+- **DB Subnet Group**
+  - Defines which subnets RDS can use
+  - Ensures database is properly isolated
+  - Enables multi-AZ deployments
+
+### Security Features
+- **KMS (Key Management Service)**
+  - Manages encryption keys
+  - Secures sensitive data (DB passwords, SSH keys)
+  - Provides audit trail for key usage
+
+- **Systems Manager Parameter Store**
+  - Secure storage for configuration data
+  - Manages secrets and parameters
+  - Integrates with KMS for encryption

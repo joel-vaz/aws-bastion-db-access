@@ -8,6 +8,11 @@ output "bastion_instance_id" {
   value       = aws_instance.bastion.id
 }
 
+output "bastion_sg_id" {
+  description = "Security group ID of the bastion host"
+  value       = var.bastion_sg_id
+}
+
 output "alb_dns_name" {
   description = "DNS name of the application load balancer"
   value       = aws_lb.web.dns_name

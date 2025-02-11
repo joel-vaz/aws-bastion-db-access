@@ -59,4 +59,5 @@ No modules.
 | <a name="output_asg_name"></a> [asg\_name](#output\_asg\_name) | Name of the auto scaling group |
 | <a name="output_bastion_instance_id"></a> [bastion\_instance\_id](#output\_bastion\_instance\_id) | Instance ID of the bastion host |
 | <a name="output_bastion_public_ip"></a> [bastion\_public\_ip](#output\_bastion\_public\_ip) | Public IP of the bastion host |
+| <a name="output_bastion_sg_id"></a> [bastion\_sg\_id](#output\_bastion\_sg\_id) | Security group ID of the bastion host |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
