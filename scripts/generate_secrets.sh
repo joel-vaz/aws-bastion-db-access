@@ -17,7 +17,7 @@ echo "Generating secrets for environment: $ENV in region: $REGION"
 
 # Store database credentials
 DB_USERNAME="admin"
-DB_PASSWORD=$(openssl rand -base64 24)
+DB_PASSWORD=$(openssl rand -hex 16)
 
 aws ssm put-parameter \
     --name "$PREFIX/database/username" \

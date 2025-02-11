@@ -66,8 +66,7 @@ resource "aws_nat_gateway" "main" {
 
 # Route Tables
 resource "aws_route_table" "public" {
-  vpc_id     = aws_vpc.main.id
-  depends_on = [aws_internet_gateway.main]
+  vpc_id = aws_vpc.main.id
 
   route {
     cidr_block = "0.0.0.0/0"

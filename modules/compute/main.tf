@@ -30,6 +30,7 @@ resource "aws_instance" "bastion" {
 
 resource "aws_eip" "bastion" {
   instance = aws_instance.bastion.id
+  domain   = "vpc"
   tags = merge(var.tags, {
     Name = "${local.name_prefix}bastion-eip"
   })
@@ -104,7 +105,7 @@ resource "aws_launch_template" "web" {
 
 resource "aws_autoscaling_group" "web" {
   name                = "${local.name_prefix}web-asg"
-  desired_capacity    = 2
+  desired_capacity    = 1
   max_size            = 4
   min_size            = 1
   force_delete        = true
