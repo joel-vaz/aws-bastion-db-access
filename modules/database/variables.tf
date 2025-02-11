@@ -24,12 +24,6 @@ variable "instance_type" {
   default     = "db.t3.micro"
 }
 
-variable "ssm_parameter_prefix" {
-  description = "SSM parameter prefix for storing database credentials"
-  type        = string
-  default     = "/bastion-app"
-}
-
 locals {
   name_prefix = "${var.environment}-${var.project_name}-"
   tags = {

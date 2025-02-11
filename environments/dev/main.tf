@@ -32,7 +32,6 @@ module "compute" {
   bastion_sg_id   = module.security.bastion_sg_id
   alb_sg_id       = module.security.alb_sg_id
   webserver_sg_id = module.security.webserver_sg_id
-
   key_name        = module.security.bastion_key_name
   instance_type   = var.instance_type
   certificate_arn = var.certificate_arn

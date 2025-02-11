@@ -36,7 +36,6 @@ No modules.
 | <a name="input_instance_type"></a> [instance\_type](#input\_instance\_type) | RDS instance type | `string` | `"db.t3.micro"` | no |
 | <a name="input_private_subnets"></a> [private\_subnets](#input\_private\_subnets) | List of private subnet IDs | `list(string)` | n/a | yes |
 | <a name="input_project_name"></a> [project\_name](#input\_project\_name) | Name of the project | `string` | n/a | yes |
-| <a name="input_ssm_parameter_prefix"></a> [ssm\_parameter\_prefix](#input\_ssm\_parameter\_prefix) | SSM parameter prefix for storing database credentials | `string` | `"/bastion-app"` | no |
 
 ## Outputs
 
