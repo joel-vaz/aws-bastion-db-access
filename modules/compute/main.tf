@@ -1,9 +1,10 @@
 # Bastion Host
 resource "aws_instance" "bastion" {
-  ami           = data.aws_ami.amazon_linux.id
-  instance_type = var.instance_type
-  subnet_id     = var.public_subnets[0]
-  key_name      = var.key_name
+  ami                  = data.aws_ami.amazon_linux.id
+  instance_type        = var.instance_type
+  subnet_id            = var.public_subnets[0]
+  key_name             = var.key_name
+  iam_instance_profile = aws_iam_instance_profile.bastion.name
 
   vpc_security_group_ids = [var.bastion_sg_id]
 
@@ -119,4 +120,32 @@ resource "aws_autoscaling_group" "web" {
       propagate_at_launch = true
     }
   }
+}
+
+# IAM role for SSM access
+resource "aws_iam_role" "bastion" {
+  name = "${local.name_prefix}bastion-role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Principal = {
+          Service = "ec2.amazonaws.com"
+        }
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "bastion_ssm" {
+  role       = aws_iam_role.bastion.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+}
+
+resource "aws_iam_instance_profile" "bastion" {
+  name = "${local.name_prefix}bastion-profile"
+  role = aws_iam_role.bastion.name
 }

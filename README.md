@@ -21,7 +21,20 @@ terraform plan
 terraform apply
 ```
 
-3. Cleanup:
+3. Validate infrastructure:
+```bash
+./scripts/validate_infrastructure.sh dev
+```
+The validation script performs comprehensive checks:
+- Network: VPC and subnet configuration
+- Bastion: IP reachability and SSH port
+- Load Balancer: DNS resolution and HTTPS endpoint
+- Auto Scaling: Instance health and capacity
+- Database: Endpoint connectivity
+- Security: Security group configuration
+```
+
+4. Cleanup:
 ```bash
 terraform destroy
 ./scripts/delete_secrets.sh dev
@@ -95,7 +108,23 @@ Database:    Web Servers → RDS (3306)
 ## Access Information
 
 - **Web Application**: `https://<alb-dns-name>`
-- **Bastion Access**: `ssh -i <key-path> ec2-user@<bastion-ip>`
+- **Bastion Access**:
+  Option 1 - SSH:
+  ```bash
+  # Get the SSH key
+  ./scripts/get_bastion_key.sh dev
+
+  # Connect to bastion
+  ssh -i ~/.ssh/bastion-dev.pem ec2-user@$(cd environments/dev && terraform output -raw bastion_public_ip)
+  ```
+  Option 2 - SSM (requires admin access):
+  ```bash
+  # Get instance ID
+  instance_id=$(cd environments/dev && terraform output -raw bastion_instance_id)
+
+  # Connect via SSM
+  aws ssm start-session --target $instance_id
+  ```
 - **Database**: Access via web servers only
 
 ## Security Notes
@@ -164,7 +193,7 @@ certificate_arn = "arn:aws:acm:REGION:ACCOUNT:certificate/CERTIFICATE-ID"
 
 ## Cost Estimation
 
-Estimated costs for development environment (US East 1):
+Estimated costs for development environment (US West 2):
 
 ### Compute & Network
 - **Bastion Host**
